@@ -1,69 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendora</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendora</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #1e1e1e;
-            color: white;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #111;
+    color: white;
+}
 
-        header {
-            background: #2b2b2b;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
+header {
+    background: #1a1a1a;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
 
-        .container {
-            padding: 20px;
-        }
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
 
-        .card {
-            background: #2b2b2b;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-        }
+.logo span {
+    color: #aaa;
+}
 
-        button {
-            background: #4CAF50;
-            border: none;
-            padding: 10px;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.container {
+    padding: 20px;
+}
 
-        button:hover {
-            background: #45a049;
-        }
-    </style>
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1c1c1c;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.2s;
+    border: 1px solid #2a2a2a;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 15px;
+}
+
+.price {
+    color: #ccc;
+    margin: 5px 0;
+}
+
+button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #ddd;
+}
+
+.form-section {
+    margin-top: 40px;
+    background: #1c1c1c;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+</style>
 </head>
 
 <body>
 
-<header>Vendora Marketplace</header>
+<header>
+    <div class="logo">VENDORA<span>.</span></div>
+</header>
 
 <div class="container">
-    <div class="card">
-        <h2>Item Title</h2>
-        <p>$50</p>
-        <button>Buy</button>
+
+    <h2>Featured Items</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <img src="https://via.placeholder.com/300">
+            <div class="card-content">
+                <h3>Street Hoodie</h3>
+                <div class="price">$50</div>
+                <button onclick="buyItem('Street Hoodie')">Buy with Venmo</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="https://via.placeholder.com/300">
+            <div class="card-content">
+                <h3>Vintage Sneakers</h3>
+                <div class="price">$120</div>
+                <button onclick="buyItem('Vintage Sneakers')">Buy with Venmo</button>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h2>Another Item</h2>
-        <p>$120</p>
-        <button>Buy</button>
+    <div class="form-section">
+        <h2>Request an Item (In-Person)</h2>
+
+        <form id="requestForm">
+            <input type="text" placeholder="Your Name" id="name" required>
+            <input type="text" placeholder="Item Requested" id="item" required>
+            <input type="text" placeholder="Location" id="location" required>
+            <button type="submit">Submit Request</button>
+        </form>
     </div>
+
 </div>
+
+<script>
+function buyItem(item) {
+    alert("Send payment on Venmo for: " + item);
+    // You can replace with your Venmo link later
+}
+
+// TEMP: logs data (we'll connect to Google next)
+document.getElementById("requestForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const data = {
+        name: document.getElementById("name").value,
+        item: document.getElementById("item").value,
+        location: document.getElementById("location").value
+    };
+
+    console.log("Request:", data);
+    alert("Request submitted!");
+
+    this.reset();
+});
+</script>
 
 </body>
 </html>
