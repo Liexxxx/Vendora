@@ -8,9 +8,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -20,70 +18,69 @@ body {
     overflow-x: hidden;
 }
 
-/* 🌆 SKYLINE BACKGROUND */
-.skyline {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 40%;
-    background-image: url("https://i.imgur.com/8QfQX3L.png");
-    background-size: cover;
-    opacity: 0.15;
-    z-index: -4;
-}
-
-/* 🧱 WALL TEXTURE */
-.wall {
+/* SAFE BACKGROUND (NO BROKEN IMAGES) */
+.bg {
     position: fixed;
     inset: 0;
     background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 40%),
         radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05), transparent 45%),
-        linear-gradient(120deg, #000, #0b0b0b);
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.04), transparent 50%),
+        linear-gradient(120deg, #000, #0a0a0a);
     z-index: -3;
 }
 
-/* 🎨 GRAFFITI OVERLAY */
-.graffiti {
-    position: fixed;
-    inset: 0;
-    background-image: url("https://i.imgur.com/4M7IWwP.png");
-    opacity: 0.12;
-    z-index: -2;
-    mix-blend-mode: screen;
-}
-
-/* 🧼 NOISE */
+/* noise texture */
 .noise {
     position: fixed;
     inset: 0;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-    opacity: 0.08;
-    z-index: -1;
-}
-
-/* ✍️ ANIMATED LOGO */
-.logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 44px;
-    letter-spacing: 6px;
-    padding: 15px 25px;
-    text-shadow:
-        0 0 10px white,
-        0 0 20px rgba(255,255,255,0.3);
-    animation: flicker 2.5s infinite;
-}
-
-@keyframes flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.02),
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    opacity: 0.15;
+    z-index: -2;
 }
 
 /* HEADER */
 header {
+    padding: 14px 20px;
     background: rgba(0,0,0,0.7);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ✍️ GRAFFITI LOGO ANIMATION */
+.logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 5px;
+    display: inline-block;
+    position: relative;
+}
+
+.logo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 2px;
+    background: white;
+    animation: draw 2s ease forwards;
+}
+
+@keyframes draw {
+    to { width: 100%; }
+}
+
+/* DROP TIMER */
+.timer {
+    margin: 10px 0;
+    color: #aaa;
 }
 
 /* GRID */
@@ -94,37 +91,31 @@ header {
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 18px;
+    gap: 16px;
 }
 
-/* 🧱 STICKER CARDS */
+/* CARDS (STOCKX x SUPREME STYLE) */
 .card {
-    position: relative;
     background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    transform: rotate(-1deg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
     overflow: hidden;
+    transition: 0.2s;
+    transform: rotate(-0.5deg);
 }
 
 .card:nth-child(even) {
-    transform: rotate(1deg);
+    transform: rotate(0.8deg);
 }
 
-/* torn edge effect */
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
-    opacity: 0.2;
+.card:hover {
+    transform: scale(1.03) rotate(0deg);
 }
 
-/* image */
 .card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    filter: contrast(1.2);
 }
 
 .card-content {
@@ -133,11 +124,13 @@ header {
 
 .price {
     color: #aaa;
+    margin-top: 5px;
 }
 
 /* BUTTON */
 button {
     width: 100%;
+    margin-top: 10px;
     padding: 10px;
     border: none;
     background: white;
@@ -154,6 +147,7 @@ button {
     justify-content: center;
     align-items: center;
     background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
 }
 
 .modal.active {
@@ -163,6 +157,7 @@ button {
 .modal-box {
     background: #111;
     padding: 20px;
+    border-radius: 12px;
     width: 300px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.1);
@@ -170,10 +165,11 @@ button {
 
 /* FORM */
 .form-box {
-    margin-top: 40px;
-    background: rgba(255,255,255,0.03);
+    margin-top: 30px;
     padding: 18px;
+    background: rgba(255,255,255,0.03);
     border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
 iframe {
@@ -186,45 +182,44 @@ iframe {
 
 <body>
 
-<div class="skyline"></div>
-<div class="wall"></div>
-<div class="graffiti"></div>
+<div class="bg"></div>
 <div class="noise"></div>
 
 <header>
     <div class="logo">VENDORA</div>
+    <div class="timer">Next Drop in: <span id="countdown"></span></div>
 </header>
 
 <div class="container">
 
-    <h2>DROP WALL</h2>
+<h2>LIVE DROPS</h2>
 
-    <div class="grid">
+<div class="grid">
 
-        <div class="card">
-            <img src="https://via.placeholder.com/300">
-            <div class="card-content">
-                <h3>Street Hoodie</h3>
-                <div class="price">$50</div>
-                <button data-item="Street Hoodie" data-price="50">BUY</button>
-            </div>
+    <div class="card">
+        <img src="https://via.placeholder.com/300">
+        <div class="card-content">
+            <h3>Street Hoodie</h3>
+            <div class="price">$50</div>
+            <button data-item="Street Hoodie" data-price="50">BUY</button>
         </div>
-
-        <div class="card">
-            <img src="https://via.placeholder.com/300">
-            <div class="card-content">
-                <h3>Vintage Sneakers</h3>
-                <div class="price">$120</div>
-                <button data-item="Vintage Sneakers" data-price="120">BUY</button>
-            </div>
-        </div>
-
     </div>
 
-    <div class="form-box">
-        <h2>REQUEST DROP</h2>
-        <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
+    <div class="card">
+        <img src="https://via.placeholder.com/300">
+        <div class="card-content">
+            <h3>Vintage Sneakers</h3>
+            <div class="price">$120</div>
+            <button data-item="Vintage Sneakers" data-price="120">BUY</button>
+        </div>
     </div>
+
+</div>
+
+<div class="form-box">
+    <h2>REQUEST DROP</h2>
+    <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
+</div>
 
 </div>
 
@@ -238,16 +233,18 @@ iframe {
 </div>
 
 <script>
+
+/* BUY SYSTEM FIXED */
 const modal = document.getElementById("modal");
 const item = document.getElementById("item");
 const price = document.getElementById("price");
 
 document.querySelectorAll("button[data-item]").forEach(btn => {
-    btn.onclick = () => {
+    btn.addEventListener("click", () => {
         item.textContent = btn.dataset.item;
         price.textContent = "Send $" + btn.dataset.price;
         modal.classList.add("active");
-    };
+    });
 });
 
 modal.onclick = (e) => {
@@ -258,6 +255,23 @@ function copyCash() {
     navigator.clipboard.writeText("$JayJay-LXMNS");
     alert("Copied");
 }
+
+/* COUNTDOWN (DROP SYSTEM) */
+let dropTime = new Date().getTime() + (1000 * 60 * 60 * 3);
+
+function updateCountdown() {
+    let now = new Date().getTime();
+    let diff = dropTime - now;
+
+    let h = Math.floor(diff / (1000 * 60 * 60));
+    let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerText = h + "h " + m + "m " + s + "s";
+}
+
+setInterval(updateCountdown, 1000);
+
 </script>
 
 </body>
