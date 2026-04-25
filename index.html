@@ -6,19 +6,49 @@
 <title>Vendora</title>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #0f0f0f;
     color: white;
+    overflow-x: hidden;
 }
 
+/* 🔥 BACKGROUND */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, #1a1a1a, #000);
+    z-index: -2;
+}
+
+.bg::after {
+    content: "";
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: rotate(25deg);
+    animation: move 8s linear infinite;
+}
+
+@keyframes move {
+    0% { transform: translateX(-50%) rotate(25deg); }
+    100% { transform: translateX(50%) rotate(25deg); }
+}
+
+/* HEADER */
 header {
-    background: #151515;
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.5);
     padding: 15px 25px;
-    border-bottom: 1px solid #2a2a2a;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .logo {
@@ -27,6 +57,16 @@ header {
     letter-spacing: 2px;
 }
 
+/* SEARCH */
+.search {
+    padding: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 6px;
+    color: white;
+}
+
+/* GRID */
 .container {
     padding: 20px;
 }
@@ -37,16 +77,19 @@ header {
     gap: 20px;
 }
 
+/* CARD */
 .card {
-    background: #1a1a1a;
-    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
     overflow: hidden;
-    border: 1px solid #2a2a2a;
-    transition: 0.2s;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.3s;
 }
 
 .card:hover {
-    transform: scale(1.03);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 
 .card img {
@@ -63,6 +106,7 @@ header {
     color: #aaa;
 }
 
+/* BUTTON */
 button {
     margin-top: 10px;
     background: white;
@@ -73,33 +117,46 @@ button {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.2s;
 }
 
 button:hover {
     background: #ddd;
 }
 
-.payment-box {
-    margin-top: 40px;
-    background: #1a1a1a;
-    padding: 20px;
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-box {
+    background: #111;
+    padding: 25px;
     border-radius: 12px;
     text-align: center;
+    width: 300px;
+    animation: pop 0.2s ease;
 }
 
-.copy-btn {
-    margin-top: 10px;
-    background: #2a2a2a;
-    color: white;
+@keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-.copy-btn:hover {
-    background: #3a3a3a;
-}
-
+/* FORM */
 .form-box {
     margin-top: 40px;
-    background: #1a1a1a;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 12px;
 }
@@ -114,8 +171,11 @@ iframe {
 
 <body>
 
+<div class="bg"></div>
+
 <header>
     <div class="logo">VENDORA.</div>
+    <input class="search" placeholder="Search...">
 </header>
 
 <div class="container">
@@ -129,7 +189,7 @@ iframe {
             <div class="card-content">
                 <h3>Street Hoodie</h3>
                 <div class="price">$50</div>
-                <button onclick="showPayment('Street Hoodie', 50)">Buy</button>
+                <button onclick="openModal('Street Hoodie', 50)">Buy</button>
             </div>
         </div>
 
@@ -138,51 +198,46 @@ iframe {
             <div class="card-content">
                 <h3>Vintage Sneakers</h3>
                 <div class="price">$120</div>
-                <button onclick="showPayment('Vintage Sneakers', 120)">Buy</button>
+                <button onclick="openModal('Vintage Sneakers', 120)">Buy</button>
             </div>
         </div>
 
     </div>
 
-    <!-- PAYMENT -->
-    <div class="payment-box" id="paymentBox" style="display:none;">
-        <h2 id="itemTitle">Item</h2>
-
-        <p id="priceText" style="color:#aaa;">Send payment via Cash App</p>
-
-        <h1 style="font-size:32px;">$JayJay-LXMNS</h1>
-
-        <button class="copy-btn" onclick="copyCashApp()">Copy Username</button>
-
-        <p style="margin-top:10px; font-size:14px; color:#777;">
-            Pay the listed amount, then confirm your order.
-        </p>
-    </div>
-
-    <!-- REQUEST FORM -->
     <div class="form-box">
-        <h2>Request an Item (In-Person)</h2>
+        <h2>Request an Item</h2>
         <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
     </div>
 
 </div>
 
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <h2 id="modalItem">Item</h2>
+        <p id="modalPrice">Send via Cash App</p>
+
+        <h1>$JayJay-LXMNS</h1>
+
+        <button onclick="copyCash()">Copy Username</button>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
 <script>
-function showPayment(item, price) {
-    document.getElementById("paymentBox").style.display = "block";
-
-    document.getElementById("itemTitle").innerText = item;
-    document.getElementById("priceText").innerText = "Send $" + price + " via Cash App";
-
-    window.scrollTo({
-        top: document.getElementById("paymentBox").offsetTop,
-        behavior: "smooth"
-    });
+function openModal(item, price) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modalItem").innerText = item;
+    document.getElementById("modalPrice").innerText = "Send $" + price + " via Cash App";
 }
 
-function copyCashApp() {
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function copyCash() {
     navigator.clipboard.writeText("$JayJay-LXMNS");
-    alert("Cash App username copied!");
+    alert("Copied!");
 }
 </script>
 
