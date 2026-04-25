@@ -12,28 +12,27 @@
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Arial, sans-serif;
     color: white;
     overflow-x: hidden;
 }
 
-/* 🔥 BACKGROUND */
+/* 🔥 BACKGROUND LAYERS */
 .bg {
     position: fixed;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 30%, #1a1a1a, #000);
-    z-index: -2;
+    background: radial-gradient(circle at 30% 20%, #1a1a1a, #000);
+    z-index: -3;
 }
 
-.bg::after {
-    content: "";
-    position: absolute;
-    width: 150%;
-    height: 150%;
+.blur {
+    position: fixed;
+    width: 200%;
+    height: 200%;
     background: linear-gradient(120deg, transparent, rgba(255,255,255,0.05), transparent);
-    transform: rotate(25deg);
-    animation: move 8s linear infinite;
+    animation: move 10s linear infinite;
+    z-index: -2;
 }
 
 @keyframes move {
@@ -41,29 +40,40 @@ body {
     100% { transform: translateX(50%) rotate(25deg); }
 }
 
+/* PARTICLES */
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    animation: float 6s infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-200px); opacity: 0; }
+}
+
 /* HEADER */
 header {
-    backdrop-filter: blur(10px);
-    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(15px);
+    background: rgba(0,0,0,0.6);
     padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
+/* GRAFFITI LOGO */
 .logo {
-    font-size: 22px;
+    font-size: 26px;
     font-weight: bold;
-    letter-spacing: 2px;
-}
-
-/* SEARCH */
-.search {
-    padding: 8px;
-    background: rgba(255,255,255,0.1);
-    border: none;
-    border-radius: 6px;
+    letter-spacing: 3px;
     color: white;
+    text-shadow:
+        0 0 5px white,
+        0 0 10px rgba(255,255,255,0.5),
+        0 0 20px rgba(255,255,255,0.3);
 }
 
 /* GRID */
@@ -79,17 +89,32 @@ header {
 
 /* CARD */
 .card {
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(15px);
     background: rgba(255,255,255,0.05);
     border-radius: 15px;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.1);
     transition: 0.3s;
+    position: relative;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.2), transparent);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.card:hover::before {
+    opacity: 1;
 }
 
 .card:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 0 25px rgba(255,255,255,0.1);
 }
 
 .card img {
@@ -117,7 +142,6 @@ button {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 button:hover {
@@ -127,35 +151,28 @@ button:hover {
 /* MODAL */
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(8px);
-    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.8);
     display: none;
     justify-content: center;
     align-items: center;
 }
 
 .modal-box {
-    background: #111;
+    background: rgba(20,20,20,0.9);
     padding: 25px;
     border-radius: 12px;
     text-align: center;
     width: 300px;
-    animation: pop 0.2s ease;
-}
-
-@keyframes pop {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    box-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 
 /* FORM */
 .form-box {
     margin-top: 40px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 12px;
@@ -172,10 +189,10 @@ iframe {
 <body>
 
 <div class="bg"></div>
+<div class="blur"></div>
 
 <header>
-    <div class="logo">VENDORA.</div>
-    <input class="search" placeholder="Search...">
+    <div class="logo">VENDORA</div>
 </header>
 
 <div class="container">
@@ -205,20 +222,17 @@ iframe {
     </div>
 
     <div class="form-box">
-        <h2>Request an Item</h2>
+        <h2>Request Item</h2>
         <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
     </div>
 
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
     <div class="modal-box">
-        <h2 id="modalItem">Item</h2>
-        <p id="modalPrice">Send via Cash App</p>
-
+        <h2 id="modalItem"></h2>
+        <p id="modalPrice"></p>
         <h1>$JayJay-LXMNS</h1>
-
         <button onclick="copyCash()">Copy Username</button>
         <button onclick="closeModal()">Close</button>
     </div>
@@ -238,6 +252,16 @@ function closeModal() {
 function copyCash() {
     navigator.clipboard.writeText("$JayJay-LXMNS");
     alert("Copied!");
+}
+
+/* PARTICLES SPAWN */
+for (let i = 0; i < 40; i++) {
+    let p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.top = Math.random() * 100 + "vh";
+    p.style.animationDuration = (3 + Math.random() * 5) + "s";
+    document.body.appendChild(p);
 }
 </script>
 
