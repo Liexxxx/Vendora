@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VENDORA</title>
+<title>Vendora</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
@@ -15,12 +15,11 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0b0b0b;
+    background: #0a0a0a;
     color: white;
     overflow-x: hidden;
 }
 
-/* 🔥 GRAFFITI BACKGROUND LAYERS */
 .bg {
     position: fixed;
     inset: 0;
@@ -28,138 +27,108 @@ body {
     z-index: -3;
 }
 
-/* 🔥 REAL GRAFFITI WALL EFFECT */
-.graffiti-layer {
+.wall {
     position: fixed;
     inset: 0;
     z-index: -2;
-
     background:
-        radial-gradient(circle at 10% 30%, rgba(255,255,255,0.08), transparent 35%),
-        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06), transparent 40%),
-        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.05), transparent 45%),
-        radial-gradient(circle at 90% 70%, rgba(255,255,255,0.04), transparent 50%),
-
-        linear-gradient(135deg, rgba(255,255,255,0.03), transparent 60%);
-
-    filter: contrast(1.2) saturate(1.2);
-    opacity: 0.9;
+        radial-gradient(circle at 15% 25%, rgba(255,255,255,0.07), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.05), transparent 45%),
+        radial-gradient(circle at 50% 75%, rgba(255,255,255,0.04), transparent 50%),
+        linear-gradient(120deg, rgba(255,255,255,0.02), transparent 60%);
 }
 
-.spray-glow {
+.spray {
     position: fixed;
-    width: 500px;
-    height: 500px;
-    background: rgba(255,255,255,0.08);
-    filter: blur(120px);
+    width: 350px;
+    height: 350px;
     border-radius: 50%;
-    top: 30%;
-    left: 40%;
+    filter: blur(100px);
     z-index: -1;
 }
 
-/* HEADER */
+.s1 { top: 10%; left: 10%; background: rgba(255,255,255,0.05); }
+.s2 { top: 50%; right: 10%; background: rgba(255,255,255,0.04); }
+.s3 { bottom: 10%; left: 40%; background: rgba(255,255,255,0.03); }
+
 header {
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.65);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,0.08);
     padding: 15px 25px;
 }
 
-/* 🧨 GRAFFITI LOGO */
 .logo {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
+    font-size: 38px;
     letter-spacing: 4px;
-    color: white;
-    text-shadow:
-        2px 2px 0 #000,
-        0 0 10px rgba(255,255,255,0.4),
-        0 0 25px rgba(255,255,255,0.2);
+    text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
-/* CONTAINER */
 .container {
-    padding: 25px;
+    padding: 22px;
 }
 
-/* GRID */
+h2 {
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    gap: 18px;
 }
 
-/* 🧱 GRAFFITI CARDS */
 .card {
     background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
     overflow: hidden;
-    position: relative;
-    transform: rotate(-0.5deg);
+    backdrop-filter: blur(10px);
     transition: 0.2s;
+    transform: rotate(-0.5deg);
 }
 
-/* sticker chaos feel */
-.card:nth-child(odd) {
+.card:nth-child(even) {
     transform: rotate(0.8deg);
 }
 
 .card:hover {
-    transform: scale(1.04) rotate(0deg);
-    box-shadow:
-        0 0 20px rgba(255,255,255,0.15),
-        0 0 40px rgba(255,255,255,0.05);
+    transform: scale(1.03);
 }
 
-/* IMAGE */
 .card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    filter: contrast(1.1) saturate(1.2);
+    filter: contrast(1.1);
 }
 
-/* TEXT */
 .card-content {
     padding: 12px;
 }
 
 .price {
     color: #aaa;
+    margin-top: 5px;
 }
 
-/* 🔥 STREET BUTTON */
 button {
     width: 100%;
+    margin-top: 10px;
     padding: 10px;
     border: none;
     background: white;
     color: black;
     font-weight: bold;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
 }
 
-button::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.1);
-    transition: 0.3s;
+button:hover {
+    background: #e6e6e6;
 }
 
-button:hover::after {
-    left: 0;
-}
-
-/* MODAL */
 .modal {
     position: fixed;
     inset: 0;
@@ -167,7 +136,7 @@ button:hover::after {
     justify-content: center;
     align-items: center;
     background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(6px);
 }
 
 .modal.active {
@@ -183,13 +152,12 @@ button:hover::after {
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* FORM */
 .form-box {
     margin-top: 40px;
-    background: rgba(255,255,255,0.04);
-    padding: 20px;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
+    padding: 18px;
+    border-radius: 12px;
 }
 
 iframe {
@@ -203,8 +171,11 @@ iframe {
 <body>
 
 <div class="bg"></div>
-<div class="graffiti-layer"></div>
-<div class="spray-glow"></div>
+<div class="wall"></div>
+
+<div class="spray s1"></div>
+<div class="spray s2"></div>
+<div class="spray s3"></div>
 
 <header>
     <div class="logo">VENDORA</div>
@@ -237,19 +208,18 @@ iframe {
     </div>
 
     <div class="form-box">
-        <h2>REQUEST DROP</h2>
+        <h2>REQUEST ITEM</h2>
         <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
     </div>
 
 </div>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
     <div class="modal-box">
         <h2 id="item"></h2>
         <p id="price"></p>
         <h1>$JayJay-LXMNS</h1>
-        <button onclick="copyCash()">COPY CASHAPP</button>
+        <button onclick="copyCash()">COPY</button>
     </div>
 </div>
 
@@ -261,9 +231,9 @@ const price = document.getElementById("price");
 document.querySelectorAll("button[data-item]").forEach(btn => {
     btn.onclick = () => {
         item.textContent = btn.dataset.item;
-        price.textContent = "Send $" + btn.dataset.price + " via Cash App";
+        price.textContent = "Send $" + btn.dataset.price;
         modal.classList.add("active");
-    }
+    };
 });
 
 modal.onclick = (e) => {
@@ -272,7 +242,7 @@ modal.onclick = (e) => {
 
 function copyCash() {
     navigator.clipboard.writeText("$JayJay-LXMNS");
-    alert("Copied Cash App!");
+    alert("Copied");
 }
 </script>
 
