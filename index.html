@@ -9,27 +9,22 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #111;
+    background: #0f0f0f;
     color: white;
 }
 
 header {
-    background: #1a1a1a;
+    background: #151515;
     padding: 15px 25px;
+    border-bottom: 1px solid #2a2a2a;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #333;
 }
 
 .logo {
     font-size: 22px;
     font-weight: bold;
     letter-spacing: 2px;
-}
-
-.logo span {
-    color: #aaa;
 }
 
 .container {
@@ -43,11 +38,11 @@ header {
 }
 
 .card {
-    background: #1c1c1c;
+    background: #1a1a1a;
     border-radius: 12px;
     overflow: hidden;
-    transition: 0.2s;
     border: 1px solid #2a2a2a;
+    transition: 0.2s;
 }
 
 .card:hover {
@@ -65,11 +60,11 @@ header {
 }
 
 .price {
-    color: #ccc;
-    margin: 5px 0;
+    color: #aaa;
 }
 
 button {
+    margin-top: 10px;
     background: white;
     color: black;
     border: none;
@@ -84,21 +79,35 @@ button:hover {
     background: #ddd;
 }
 
-.form-section {
+.payment-box {
     margin-top: 40px;
-    background: #1c1c1c;
+    background: #1a1a1a;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
+    text-align: center;
 }
 
-input, textarea {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
+.copy-btn {
+    margin-top: 10px;
     background: #2a2a2a;
     color: white;
+}
+
+.copy-btn:hover {
+    background: #3a3a3a;
+}
+
+.form-box {
+    margin-top: 40px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
 }
 </style>
 </head>
@@ -106,12 +115,12 @@ input, textarea {
 <body>
 
 <header>
-    <div class="logo">VENDORA<span>.</span></div>
+    <div class="logo">VENDORA.</div>
 </header>
 
 <div class="container">
 
-    <h2>Featured Items</h2>
+    <h2>Featured Drops</h2>
 
     <div class="grid">
 
@@ -120,7 +129,7 @@ input, textarea {
             <div class="card-content">
                 <h3>Street Hoodie</h3>
                 <div class="price">$50</div>
-                <button onclick="buyItem('Street Hoodie')">Buy with Venmo</button>
+                <button onclick="showPayment('Street Hoodie', 50)">Buy</button>
             </div>
         </div>
 
@@ -129,46 +138,52 @@ input, textarea {
             <div class="card-content">
                 <h3>Vintage Sneakers</h3>
                 <div class="price">$120</div>
-                <button onclick="buyItem('Vintage Sneakers')">Buy with Venmo</button>
+                <button onclick="showPayment('Vintage Sneakers', 120)">Buy</button>
             </div>
         </div>
 
     </div>
 
-    <div class="form-section">
-        <h2>Request an Item (In-Person)</h2>
+    <!-- PAYMENT -->
+    <div class="payment-box" id="paymentBox" style="display:none;">
+        <h2 id="itemTitle">Item</h2>
 
-        <form id="requestForm">
-            <input type="text" placeholder="Your Name" id="name" required>
-            <input type="text" placeholder="Item Requested" id="item" required>
-            <input type="text" placeholder="Location" id="location" required>
-            <button type="submit">Submit Request</button>
-        </form>
+        <p id="priceText" style="color:#aaa;">Send payment via Cash App</p>
+
+        <h1 style="font-size:32px;">$JayJay-LXMNS</h1>
+
+        <button class="copy-btn" onclick="copyCashApp()">Copy Username</button>
+
+        <p style="margin-top:10px; font-size:14px; color:#777;">
+            Pay the listed amount, then confirm your order.
+        </p>
+    </div>
+
+    <!-- REQUEST FORM -->
+    <div class="form-box">
+        <h2>Request an Item (In-Person)</h2>
+        <iframe src="https://forms.gle/guubrsHSWtuWRtix7"></iframe>
     </div>
 
 </div>
 
 <script>
-function buyItem(item) {
-    alert("Send payment on Venmo for: " + item);
-    // You can replace with your Venmo link later
+function showPayment(item, price) {
+    document.getElementById("paymentBox").style.display = "block";
+
+    document.getElementById("itemTitle").innerText = item;
+    document.getElementById("priceText").innerText = "Send $" + price + " via Cash App";
+
+    window.scrollTo({
+        top: document.getElementById("paymentBox").offsetTop,
+        behavior: "smooth"
+    });
 }
 
-// TEMP: logs data (we'll connect to Google next)
-document.getElementById("requestForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    const data = {
-        name: document.getElementById("name").value,
-        item: document.getElementById("item").value,
-        location: document.getElementById("location").value
-    };
-
-    console.log("Request:", data);
-    alert("Request submitted!");
-
-    this.reset();
-});
+function copyCashApp() {
+    navigator.clipboard.writeText("$JayJay-LXMNS");
+    alert("Cash App username copied!");
+}
 </script>
 
 </body>
